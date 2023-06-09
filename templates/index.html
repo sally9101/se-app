@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="customer">
+            <a href="{{ url_for('customer') }}"><p>客戶管理</p></a>
+        </div>
+        <div class="purchase">
+            <a href="{{ url_for('purchase') }}"><p>交易管理</p></a>
+        </div>
+        <div class="promotion">
+            <a href="{{ url_for('marketing') }}"><p>行銷管理</p></a>
+        </div>
+        <div class="sales">
+            <a href="{{ url_for('sales') }}"><p>銷售管理</p></a>
+        </div>
+        <div class="kpi">
+            <a href="{{ url_for('kpi') }}"><p>績效管理</p></a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-top">
+            <div class="bgc1">
+                <div class="bgc1-top" style=" background-color: #fff;">
+
+                    <div class="bgc-top">
+                        <p>銷售額</p>
+                        <img src="{{ url_for('static', filename='img/more.png') }}" alt="">
+                    </div>
+                        
+                    <div class="bgc-top-buttom">
+
+                        <div class="top-left">
+                            <img src="{{ url_for('static', filename='img/coin (2).png') }}" alt="">
+                            <span>$</span>
+                            <span>{{ total_price }}</span>
+                        </div>
+
+                        <div class="top-right">
+                            <img src="{{ url_for('static', filename='img/stocks.png') }}" alt="">
+                            <p> {{ percentage_change }}%</p>    
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="bgc1-buttom">
+
+                    <div class="bgc1-left">
+                        <!--圖表-->
+                        <canvas id="myChart"></canvas>
+    <script>
+        // 从Flask传递的数据
+        var data = JSON.parse('{{ data | safe }}');
+
+        // 提取学期列表作为标签
+        var labels = Object.keys(data);
+
+        // 提取业务员ID和对应的订单数量作为数据集
+        var datasets = [];
+        var salesmanIds = Object.keys(data[labels[0]]);
+        var colors = ['#C1FFE4', '#FF9797', '#FFC1E0', '#FFFFB9', '#ACD6FF'];
+
+        for (var i = 0; i < salesmanIds.length; i++) {
+            var salesmanId = salesmanIds[i];
+            var orderNums = [];
+            var color = colors[i];  // 使用颜色数组中的颜色
+
+            for (var j = 0; j < labels.length; j++) {
+                var semester = labels[j];
+                orderNums.push(data[semester][salesmanId]);
+            }
+
+            datasets.push({
+                label: 'Salesman ID: ' + salesmanId,
+                data: orderNums,
+                backgroundColor: color,
+                borderColor: 'rgba(0, 0, 0, 0)',
+                borderWidth: 1
+            });
+        }
+
+        // 创建堆叠条形图
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    x: { 
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: true // x轴从0开始
+                        }
+                    },
+                    y: { 
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: true // y轴从0开始
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            generateLabels: function(chart) {
+                                var datasets = chart.data.datasets;
+                                var labels = [];
+
+                                for (var i = 0; i < datasets.length; i++) {
+                                    var dataset = datasets[i];
+                                    labels.push({
+                                        text: dataset.label,
+                                        fillStyle: dataset.backgroundColor,
+                                        strokeStyle: dataset.borderColor,
+                                        lineWidth: dataset.borderWidth,
+                                        hidden: dataset.hidden,
+                                        index: i
+                                    });
+                                }
+
+                                return labels;
+                            }
+                        }
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+                    </div>
+
+                    <div class="bgc1-right">
+                        <!--圖表-->
+                        <div class="chart-container">
+                            <canvas id="chart"></canvas>
+                        </div>
+                        <script>
+                            fetch('/chart')
+                                .then(response => response.json())
+                                .then(data => {
+                                    // 提取x軸和y軸數據
+                                    var xValues = data.map(function(item) {
+                                        return item.semester;
+                                    });
+                                    var yValues = data.map(function(item) {
+                                        return item.orderNum;
+                                    });
+                        
+                                    // 繪製折線圖
+                                    var ctx = document.getElementById('chart').getContext('2d');
+                                    var chart = new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: xValues,                                    
+                                            datasets: [{
+                                               label: 'Order Number',
+                                               data: yValues,
+                                               borderColor: 'red',
+                                               fill: true
+                                            }] 
+            
+                                        },
+                                        options: {
+                                            scales: {
+                                                 y: {
+                                                    beginAtZero: true,
+                                                    
+                                                 }
+                                            }
+                                       },
+                                       
+                                  });
+                                });
+                        </script>
+                        
+                    </div>
+
+                </div>
+                    
+            </div>
+
+            <div class="bgc2">
+                <div class="bgc1-top" style=" background-color: #fff;">
+
+                    <div class="bgc-top">
+                        <p>目標銷售額</p>
+                        <img src="{{ url_for('static', filename='img/more.png') }}" alt="">
+                    </div>
+
+                    <div class="top-left">
+                        <img src="{{ url_for('static', filename='img/target.png') }}" alt="">
+                        <span>$</span>
+                        <span>800,000</span>
+                    </div>
+
+                </div>
+
+                <div class="bgc1-buttom">
+                    
+                    <div class="bgc2-left">
+                        <!--圖表-->
+                    </div>
+
+                    <div class="bgc2-right">
+                        <!--圖表-->
+    
+                    </div>
+
+                </div>
+            </div>
+            
+        </section>
+
+        <section class="section-buttom">
+            <div class="bgc3">
+
+                <div class="bgc3-left">
+
+                    <div class="bgc3-txt">
+                        <p>據點營收</p>
+                    </div>
+
+                    <div class="bgc3-chart">
+                        <!--圖表-->
+
+                    </div>
+
+                </div>
+
+                <div class="bgc3-right">
+
+                    <div class="bgc3-txt">
+                        <p>顧客分析</p>
+                    </div>
+
+                    <div class="bgc3-chart">
+                        <!--圖表-->
+                    </div>
+                    
+                </div>
+
+            </div>
+
+
+        </section>
+    </main>
+
+    
+</body>
+</html>

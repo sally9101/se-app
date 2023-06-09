@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="customer">
+            <a href="{{ url_for('customer') }}"><p>客戶管理</p></a>
+        </div>
+        <div class="purchase">
+            <a href="{{ url_for('purchase') }}"><p>交易管理</p></a>
+        </div>
+        <div class="promotion">
+            <a href="{{ url_for('marketing') }}"><p>行銷管理</p></a>
+        </div>
+        <div class="sales">
+            <a href="{{ url_for('sales') }}"><p>銷售管理</p></a>
+        </div>
+        <div class="kpi" style="border: 2px solid gray;">
+            <a href="#"><p>績效管理</p></a>
+        </div>
+        <div class="home" style="width: 100PX;">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/dashboard.png') }}"></a>
+        </div>
+    </nav>
+    <section class="section-one">
+        <div class="container"> 
+            <form>  
+                <input type="search" placeholder="期間...">
+                <button type="submit">Search</button>
+             </form>
+          </div>
+        <div class="container2" style="border: 1px solid #C7D2DF ">
+            <div class="bgc1-top">
+
+                <div class="bgc-top">
+                    <p>目標銷售額</p>
+                    <img src="{{ url_for('static', filename='img/more.png') }}" alt="">
+                </div>
+
+                <div class="top-left">
+                    <img src="{{ url_for('static', filename='img/target.png') }}" alt="">
+                    <span>$</span>
+                    <span>10,000,000</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section-two">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th width="120px">業務員編號</th>
+                        <th width="120px">分店編號</th>
+                        <th width="120px">客戶人數</th>
+                        <th width="120px">目標金額</th>
+                        <th width="120px">銷售總數量</th>
+                        <th width="120px">銷售總金額</th>
+                        <th width="120px">日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>S001</td>
+                        <td>P001</td>
+                        <td>20</td>
+                        <td>1,000,000</td>
+                        <td>10</td>
+                        <td>100,000</td>
+                        <td>2023/5/31</td>
+                    </tr>
+                </tbody>
+            </table>
+
+    </section>
+</body>
+</html>

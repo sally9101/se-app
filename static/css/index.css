@@ -1,0 +1,195 @@
+*{
+    margin:0;
+    padding:0;
+    text-decoration: none;
+    color: black;
+}
+.navbar{
+    margin: 25px 30px 10px 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /*background-color: #b1b1b1;*/
+}
+.navbar>div{
+    width: 300px;
+    height: 50px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customer{
+    background-color: #DFC6C6;
+}
+
+.purchase{
+    background-color: #e5e5e5;
+}
+
+.promotion{
+    background-color: #C1D4C5;
+}
+
+.sales{
+    background-color: #9CB4CE;
+}
+
+.kpi{
+    background-color: #C7D2DF;
+}
+
+
+main{
+    margin: 0 30px 0 30px;
+}
+
+.section-top,.section-buttom{
+    display: flex;   
+}
+
+.bgc1,.bgc2{
+    width: 50%;
+    height: 400px;
+    padding:20px;
+    border-radius: 5px;
+}
+
+.bgc1{
+    background-color: #9CB4CE;
+    margin-right: 10px;   
+}
+
+.bgc1-top{
+   
+    height: 65px;
+    border-radius: 10px;
+    padding: 10px 0 0 20px;   
+}
+
+.bgc-top{
+    display: flex;
+    justify-content: space-between;
+}
+
+.bgc-top>p{
+    font-size: 18px;
+    font-weight: bold; 
+    margin-bottom: 5px; 
+}
+
+.bgc-top>img{
+    width: 25px;
+    height: 25px;
+    padding:0 20px 0 0;
+}
+
+.bgc-top-buttom{
+    display: flex;
+    justify-content: space-between;
+}
+
+.top-left>img,.top-right>img{
+    width: 25px;
+    height: 25px;
+}
+
+.top-left>span{
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 5px;
+    position: relative;
+    top: -5px;   
+}
+
+.top-right{
+    display: flex;
+}
+
+.top-right>p{
+    font-size: 20px;
+    font-weight: bold;
+    color: #436B46;
+    padding: 0 20px 0 10px;
+}
+
+.bgc1-buttom{
+    display: flex;
+    margin-top: 10px;
+}
+
+.bgc1-left,.bgc1-right,.bgc2-left,.bgc2-right{
+    background-color: #fff;
+    height: 310px;
+    border-radius: 10px;
+}
+
+.bgc1-left,.bgc1-right{   
+    width: 50%;    
+}
+
+.bgc1-left,.bgc2-left{
+    margin-right: 5px;
+}
+
+.bgc1-right,.bgc2-right{
+    margin-left: 5px;
+}
+
+.bgc2-left{
+    width: 40%;
+}
+
+.bgc2-right{
+    width: 60%;
+}
+
+.bgc2{
+    background-color: #C7D2DF;
+    margin-left: 10px;    
+}
+.section-buttom{
+    margin-top: 20px;
+}
+
+.bgc3{
+    background-color: #C1D4C5;
+    width: 100%;
+    height: 330px;
+    border-radius: 5px;
+    padding:20px;
+    display: flex;
+}
+
+.bgc3-left,.bgc3-right{
+    width: 50%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.bgc3-left{
+    margin-right: 10px;   
+}
+
+.bgc3-right{
+    margin-left: 10px;
+}
+
+.bgc3-txt{
+    padding: 10px 0 0 20px;
+}
+
+.bgc3-txt>p{
+    font-size: 18px;
+    font-weight: bold; 
+    margin-bottom: 5px; 
+}
+
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px; /* 调整为适当的高度 */
+}

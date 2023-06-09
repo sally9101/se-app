@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>purchase</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="customer">
+            <a href="{{ url_for('customer') }}"><p>客戶管理</p></a>
+        </div>
+        <div class="purchase" style="border: 2px solid gray;">
+            <a href="#"><p>交易管理</p></a>
+        </div>
+        <div class="promotion">
+            <a href="{{ url_for('marketing') }}"><p>行銷管理</p></a>
+        </div>
+        <div class="sales">
+            <a href="{{ url_for('sales') }}"><p>銷售管理</p></a>
+        </div>
+        <div class="kpi">
+            <a href="{{ url_for('kpi') }}"><p>績效管理</p></a>
+        </div>
+        <div class="home" style="width: 100PX;">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/dashboard.png') }}"></a>
+        </div>
+    </nav>
+    <section class="section-one">
+        <div class="container"> 
+            <form>  
+                <input type="search" placeholder="期間...">
+                <button type="submit">Search</button>
+             </form>
+          </div>
+        <div class="container2">
+            <div class="bgc1-top">
+
+            </div>
+        </div>
+    </section>
+    <section class="section-two">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th width="120px">訂單編號</th>
+                        <th width="120px">業務員編號</th>
+                        <th width="120px">顧客編號</th>
+                        <th width="120px">商品編號</th>
+                        <th width="100px">訂購數量</th>
+                        <th width="120px">付款方式</th>
+                        <th width="120px">總金額</th>
+                        <th width="120px">日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>O10101</td>
+                        <td>O002</td>
+                        <td>COO1</td>
+                        <td>p001</td>
+                        <td>2</td>
+                        <td>轉帳</td>
+                        <td>30,000</td>
+                        <td>2023/5/31</td>
+                    </tr>
+                </tbody>
+            </table>
+
+    </section>
+</body>
+</html>

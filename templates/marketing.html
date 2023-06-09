@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARKETING</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="customer">
+            <a href="{{ url_for('customer') }}"><p>客戶管理</p></a>
+        </div>
+        <div class="purchase">
+            <a href="{{ url_for('purchase') }}"><p>交易管理</p></a>
+        </div>
+        <div class="promotion" style="border: 2px solid gray;">
+            <a href="#"><p>行銷管理</p></a>
+        </div>
+        <div class="sales">
+            <a href="{{ url_for('sales') }}"><p>銷售管理</p></a>
+        </div>
+        <div class="kpi">
+            <a href="{{ url_for('kpi') }}"><p>績效管理</p></a>
+        </div>
+        <div class="home" style="width: 100PX;">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/dashboard.png') }}"></a>
+        </div>
+    </nav>
+    <section class="section-one">
+        <div class="container"> 
+            <form>  
+                <input type="search" placeholder="期間...">
+                <button type="submit">Search</button>
+             </form>
+          </div>
+        <div class="container2">
+            <div class="bgc1-top">
+
+               
+            </div>
+        </div>
+    </section>
+    <section class="section-two">
+
+            <table >
+                <thead>
+                    <tr>
+                        <th width="120px">公共摩以編號</th>
+                        <th width="120px">分店編號</th>
+                        <th width="120px">放置地點</th>
+                        <th width="120px">投幣總金額</th>
+                        <th width="120px">租金</th>
+                        <th width="120px">日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PC003</td>
+                        <td>P003</td>
+                        <td>中壢</td>
+                        <td>2,000</td>
+                        <td>3,000</td>
+                        <td>2023/5/31</td>
+                    </tr>
+                </tbody>
+            </table>
+
+    </section>
+</body>
+</html>
