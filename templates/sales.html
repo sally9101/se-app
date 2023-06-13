@@ -32,10 +32,10 @@
     </nav>
     <section class="section-one">
         <div class="container"> 
-            <form>  
-                <input type="search" placeholder="期間...">
+            <form action="/search_product" method="post">
+                <input type="text" name="search_term" placeholder="請輸入商品編號">
                 <button type="submit">Search</button>
-             </form>
+            </form>
           </div>
         <div class="container2" style="border: 1px solid #C7D2DF ">
             <div class="bgc1-top" >
@@ -48,7 +48,7 @@
                 <div class="top-left">
                     <img src="{{ url_for('static', filename='img/coin (2).png') }}" alt="">
                     <span>$</span>
-                    <span>800,000</span>
+                    <span>{{ total_price }}</span>
                 </div>
             </div>
         </div>
@@ -63,19 +63,19 @@
                         <th width="120px">商品價格</th>
                         <th width="120px">庫存</th>
                         <th width="120px">銷售量</th>
-                        <th width="120px">日期</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for sale in sales %}
                     <tr>
-                        <td>C0001</td>
-                        <td>按摩椅</td>
-                        <td>20,000</td>
-                        <td>10</td>
-                        <td>15</td>
-                        <td>2023/5/31</td>
+                        <td>{{ sale[0] }}</td>
+                        <td>{{ sale[1] }}</td>
+                        <td>{{ sale[2] }}</td>
+                        <td>{{ sale[3] }}</td>
+                        <td>{{ sale[4] }}</td>
+                        
                     </tr>
-                </tbody>
+                    {% endfor %}
             </table>
 
     </section>

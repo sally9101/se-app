@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>搜尋結果</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+  </head>
+
+  <body>
+    <nav class="navbar">
+        <div class="customer">
+            <a href="{{ url_for('customer') }}"><p>客戶管理</p></a>
+        </div>
+        <div class="purchase" style="border: 2px solid gray;">
+            <a href="#"><p>交易管理</p></a>
+        </div>
+        <div class="promotion">
+            <a href="{{ url_for('marketing') }}"><p>行銷管理</p></a>
+        </div>
+        <div class="sales">
+            <a href="{{ url_for('sales') }}"><p>銷售管理</p></a>
+        </div>
+        <div class="kpi">
+            <a href="{{ url_for('kpi') }}"><p>績效管理</p></a>
+        </div>
+        <div class="home" style="width: 100PX;">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/dashboard.png') }}"></a>
+        </div>
+    </nav>
+  <section class="section-one">
+      <div class="container"> 
+        <form action="/search_order" method="post">
+          <input type="text" name="search_term" placeholder="請輸入訂單編號">
+          <button type="submit">Search</button>
+      </form>
+      </div>
+      <div class="container2" tyle="border: 1px white; ">
+          <div class="bgc1-top" style="border: 1px white; ">
+
+            
+          </div>
+        
+      </div>
+    </section>
+    <section class="section-two">
+    <table>
+      {% if results2 %}
+      <thead>
+        <tr>
+          <th width="120px">訂單編號</th>
+          <th width="120px">業務員編號</th>
+          <th width="120px">商品編號</th>
+          <th width="120px">顧客編號</th>
+          <th width="120px">顧客姓名</th>
+          <th width="100px">訂購數量</th>
+          <th width="120px">付款方式</th>
+          <th width="120px">總金額</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in results2 %}
+        <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td>
+          <td>{{ row[4] }}</td>
+          <td>{{ row[5] }}</td>
+          <td>{{ row[6] }}</td>
+          <td>{{ row[7] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>沒有找到符合搜尋的結果，請重新查詢</p>
+    {% endif %}
+    </section>
+  </body>
+</html>

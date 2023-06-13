@@ -31,10 +31,10 @@
     </nav>
     <section class="section-one">
         <div class="container"> 
-            <form>  
-                <input type="search" placeholder="期間...">
+            <form action="/search_order" method="post">
+                <input type="text" name="search_term" placeholder="請輸入訂單編號">
                 <button type="submit">Search</button>
-             </form>
+            </form>
           </div>
         <div class="container2">
             <div class="bgc1-top">
@@ -49,25 +49,27 @@
                     <tr>
                         <th width="120px">訂單編號</th>
                         <th width="120px">業務員編號</th>
-                        <th width="120px">顧客編號</th>
                         <th width="120px">商品編號</th>
+                        <th width="120px">顧客編號</th>
+                        <th width="120px">顧客姓名</th>
                         <th width="100px">訂購數量</th>
                         <th width="120px">付款方式</th>
                         <th width="120px">總金額</th>
-                        <th width="120px">日期</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for order in orders %}
                     <tr>
-                        <td>O10101</td>
-                        <td>O002</td>
-                        <td>COO1</td>
-                        <td>p001</td>
-                        <td>2</td>
-                        <td>轉帳</td>
-                        <td>30,000</td>
-                        <td>2023/5/31</td>
+                        <td>{{ order[0] }}</td>
+                        <td>{{ order[1] }}</td>
+                        <td>{{ order[2] }}</td>
+                        <td>{{ order[3] }}</td>
+                        <td>{{ order[4] }}</td>
+                        <td>{{ order[5] }}</td>
+                        <td>{{ order[6] }}</td>
+                        <td>{{ order[7] }}</td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
 

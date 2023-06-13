@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>搜尋結果</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+  </head>
+
+  <body>
+    <nav class="navbar">
+        <div class="customer">
+            <a href="{{ url_for('customer') }}"><p>客戶管理</p></a>
+        </div>
+        <div class="purchase">
+            <a href="{{ url_for('purchase') }}"><p>交易管理</p></a>
+        </div>
+        <div class="promotion" style="border: 2px solid gray;">
+            <a href="#"><p>行銷管理</p></a>
+        </div>
+        <div class="sales">
+            <a href="{{ url_for('sales') }}"><p>銷售管理</p></a>
+        </div>
+        <div class="kpi">
+            <a href="{{ url_for('kpi') }}"><p>績效管理</p></a>
+        </div>
+        <div class="home" style="width: 100PX;">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/dashboard.png') }}"></a>
+        </div>
+    </nav>
+  <section class="section-one">
+      <div class="container"> 
+        <form action="/search_public" method="post">
+          <input type="text" name="search_term" placeholder="請輸入公共按摩椅編號">
+          <button type="submit">Search</button>
+      </form>
+      </div>
+      <div class="container2" tyle="border: 1px white; ">
+          <div class="bgc1-top" style="border: 1px white; ">
+
+            
+          </div>
+        
+      </div>
+    </section>
+    <section class="section-two">
+    <table>
+      {% if results2 %}
+      <thead>
+        <tr>
+            <th width="120px">公共按摩椅編號</th>
+            <th width="120px">分店編號</th>
+            <th width="120px">放置地點</th>
+            <th width="120px">投幣總金額</th>
+            <th width="120px">租金</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in results2 %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[3] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>沒有找到符合搜尋的結果，請重新查詢</p>
+    {% endif %}
+    </section>
+  </body>
+</html>

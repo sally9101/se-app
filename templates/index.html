@@ -7,6 +7,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
 </head>
 <body>
     <nav class="navbar">
@@ -59,134 +61,115 @@
                     <div class="bgc1-left">
                         <!--圖表-->
                         <canvas id="myChart"></canvas>
-    <script>
-        // 从Flask传递的数据
-        var data = JSON.parse('{{ data | safe }}');
 
-        // 提取学期列表作为标签
-        var labels = Object.keys(data);
-
-        // 提取业务员ID和对应的订单数量作为数据集
-        var datasets = [];
-        var salesmanIds = Object.keys(data[labels[0]]);
-        var colors = ['#C1FFE4', '#FF9797', '#FFC1E0', '#FFFFB9', '#ACD6FF'];
-
-        for (var i = 0; i < salesmanIds.length; i++) {
-            var salesmanId = salesmanIds[i];
-            var orderNums = [];
-            var color = colors[i];  // 使用颜色数组中的颜色
-
-            for (var j = 0; j < labels.length; j++) {
-                var semester = labels[j];
-                orderNums.push(data[semester][salesmanId]);
-            }
-
-            datasets.push({
-                label: 'Salesman ID: ' + salesmanId,
-                data: orderNums,
-                backgroundColor: color,
-                borderColor: 'rgba(0, 0, 0, 0)',
-                borderWidth: 1
-            });
-        }
-
-        // 创建堆叠条形图
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: datasets
-            },
-            options: {
-                scales: {
-                    x: { 
-                        stacked: true,
-                        ticks: {
-                            beginAtZero: true // x轴从0开始
-                        }
-                    },
-                    y: { 
-                        stacked: true,
-                        ticks: {
-                            beginAtZero: true // y轴从0开始
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            generateLabels: function(chart) {
-                                var datasets = chart.data.datasets;
-                                var labels = [];
-
-                                for (var i = 0; i < datasets.length; i++) {
-                                    var dataset = datasets[i];
-                                    labels.push({
-                                        text: dataset.label,
-                                        fillStyle: dataset.backgroundColor,
-                                        strokeStyle: dataset.borderColor,
-                                        lineWidth: dataset.borderWidth,
-                                        hidden: dataset.hidden,
-                                        index: i
-                                    });
+                        <script>
+                            var data = {{ chart_data1|tojson }};
+                            var labels = Object.keys(data);
+                    
+                            var datasets = [];
+                            var productIds = Object.keys(data[labels[0]]);
+                            var colors = ['#FFCC99', '#FFFF6F', '#99CCFF', '#FFCCCC', '#A3D1D1'];
+                    
+                            for (var i = 0; i < productIds.length; i++) {
+                                var productId = productIds[i];
+                                var orderNums = [];
+                                var color = colors[i % colors.length];
+                    
+                                for (var j = 0; j < labels.length; j++) {
+                                    var semester = labels[j];
+                                    orderNums.push(data[semester][productId]);
                                 }
-
-                                return labels;
+                    
+                                datasets.push({
+                                    label:  productId,
+                                    data: orderNums,
+                                    backgroundColor: color,
+                                    borderWidth: 0
+                                });
                             }
-                        }
-                    }
-                },
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-    </script>
+                    
+                            var ctx = document.getElementById('myChart').getContext('2d');
+                            var chart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels,
+                                    datasets: datasets
+                                },
+                                options: {
+                                    scales: {
+                                        x: {
+                                            stacked: true,
+                                            ticks: {
+                                                beginAtZero: true
+                                            }
+                                        },
+                                        y: {
+                                            stacked: true,
+                                            ticks: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    },
+                                    plugins: {
+                                        legend: {
+                                            position: 'top',
+                                            labels: {
+                                                generateLabels: function(chart) {
+                                                    var datasets = chart.data.datasets;
+                                                    var labels = [];
+                    
+                                                    for (var i = 0; i < datasets.length; i++) {
+                                                        var dataset = datasets[i];
+                                                        labels.push({
+                                                            text: dataset.label,
+                                                            fillStyle: dataset.backgroundColor,
+                                                            hidden: dataset.hidden,
+                                                            index: i
+                                                        });
+                                                    }
+                    
+                                                    return labels;
+                                                }
+                                            }
+                                        }
+                                    },
+                                    responsive: true,
+                                    maintainAspectRatio: false
+                                }
+                            });
+                        </script>
                     </div>
 
                     <div class="bgc1-right">
                         <!--圖表-->
-                        <div class="chart-container">
-                            <canvas id="chart"></canvas>
-                        </div>
+                        <canvas id="chart" width="400" height="400"></canvas>
+
                         <script>
-                            fetch('/chart')
-                                .then(response => response.json())
-                                .then(data => {
-                                    // 提取x軸和y軸數據
-                                    var xValues = data.map(function(item) {
-                                        return item.semester;
-                                    });
-                                    var yValues = data.map(function(item) {
-                                        return item.orderNum;
-                                    });
+                            var chartData = {{ chart_json|safe }};
                         
-                                    // 繪製折線圖
-                                    var ctx = document.getElementById('chart').getContext('2d');
-                                    var chart = new Chart(ctx, {
-                                        type: 'line',
-                                        data: {
-                                            labels: xValues,                                    
-                                            datasets: [{
-                                               label: 'Order Number',
-                                               data: yValues,
-                                               borderColor: 'red',
-                                               fill: true
-                                            }] 
-            
-                                        },
-                                        options: {
-                                            scales: {
-                                                 y: {
-                                                    beginAtZero: true,
-                                                    
-                                                 }
+                            // 修改图例标签
+                            chartData.datasets.forEach(function(dataset) {
+                                dataset.label = '各型號銷售額'; // 将 '新标签' 替换为您想要的标签
+                            });
+                        
+                            var ctx = document.getElementById('chart').getContext('2d');
+                            new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: chartData.labels,
+                                    datasets: chartData.datasets
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            ticks: {
+                                                beginAtZero: true,
+                                                stepSize: 2
                                             }
-                                       },
-                                       
-                                  });
-                                });
+                                        }
+                                    }
+                                }
+                            });
                         </script>
                         
                     </div>
@@ -206,7 +189,7 @@
                     <div class="top-left">
                         <img src="{{ url_for('static', filename='img/target.png') }}" alt="">
                         <span>$</span>
-                        <span>800,000</span>
+                        <span>{{total_sell_target}}</span>
                     </div>
 
                 </div>
@@ -214,11 +197,153 @@
                 <div class="bgc1-buttom">
                     
                     <div class="bgc2-left">
+                        <h3 style="text-align: center;">業績達成率:{{ achievement_rate }}%</h3>
                         <!--圖表-->
+                        <div class="chart-container">
+                            <canvas id="PercentChart"></canvas>
+                        </div>
+                        <style>
+                            .chart-container {
+                                margin-top: 50px; /* 调整此值以向下移动图表 */
+                                height: 250px;  /* 调整此值以调整图表的高度 */
+                            }
+                        </style>
+
+                        <script>
+                            
+                            var ctx = document.getElementById('PercentChart').getContext('2d');
+                            var achievement_rate = "{{ achievement_rate }}";
+                            var data = {
+                                labels: ['業績達成率'],
+                                datasets: [{
+                                    data: [achievement_rate, 100 - achievement_rate],
+                                    backgroundColor: ['#FF5151', '#FFFFFF']
+                                }]
+                            };
+                            var options = {
+                                cutoutPercentage: 50,
+                                // 可以在这里设置環形圖的样式和交互行为
+                            };
+                            var myChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: data,
+                                options: options
+                            });
+                    
+                            // 添加業績達成率百分比数值
+                            var centerLabelPlugin = {
+    afterDraw: function(chart) {
+        var width = chart.chart.width,
+            height = chart.chart.height,
+            ctx = chart.chart.ctx;
+
+        var fontSize = (height / 100).toFixed(2);
+        ctx.font = fontSize + "em sans-serif";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = '#000000'; // 设置百分比数值的颜色，这里使用黑色
+
+        var achievement_rate = parseFloat("{{ achievement_rate }}").toFixed(2); // 将業績達成率转换为浮点数并保留两位小数
+        var textX = Math.round((width - ctx.measureText(achievement_rate + "%").width) / 2);
+        var textY = height / 2;
+
+        ctx.fillText(achievement_rate + "%", textX, textY);
+    }
+};
+Chart.pluginService.register(centerLabelPlugin);
+                        </script>
                     </div>
 
                     <div class="bgc2-right">
+                        <h3 style="text-align: center;">員工績效</h3>
                         <!--圖表-->
+                        <style>
+                            .chart-container {
+                              margin-top: 20px; /* 根据需要调整垂直方向的距离 */
+                            }
+                          </style>
+                          
+                          <!-- 在合适的位置应用样式到图表容器元素 -->
+                          <div class="chart-container">
+                            <canvas id="mixed-chart"></canvas>
+
+                          </div>
+
+                        <script>
+                           var chartData = {{ chart_data|safe }};
+                            
+                            // 資料處理
+                            var labels = chartData.map(function(item) { return item[0]; });
+                            var orderNumData = chartData.map(function(item) { return item[1]; });
+                            var sellMoneyData = chartData.map(function(item) { return item[2]; });
+                        
+                            // 繪製混合圖表
+                            var ctx = document.getElementById('mixed-chart').getContext('2d');
+                            new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        label: '客戶數',
+                                        data: orderNumData,
+                                        yAxisID: 'orderNumAxis',  // 使用指定的 Y 軸
+                                        type: 'line',  // 折線圖
+                                        fill: false,
+                                        borderColor: '#FF60AF',
+                                        backgroundColor: '#FF60AF'
+                                    }, {
+                                        label: '銷售額',
+                                        data: sellMoneyData,
+                                        yAxisID: 'sellMoneyAxis',  // 使用指定的 Y 軸
+                                        type: 'bar', // 長條圖
+                                        backgroundColor: '#CECEFF'
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        orderNumAxis: {
+                                            type: 'linear',
+                                            position: 'left',
+                                            beginAtZero: true,
+                                            ticks: {
+                                                stepSize: 1
+                                            },
+                                            scaleLabel: {
+                                                display: true,
+                                                labelString: 'Order Number'
+                                            }
+                                        },
+                                        sellMoneyAxis: {
+                                            type: 'linear',
+                                            position: 'right',
+                                            beginAtZero: true,
+                                            ticks: {
+                                                stepSize: 100
+                                            },
+                                            scaleLabel: {
+                                                display: true,
+                                                labelString: 'Sales Money'
+                                            }
+                                        }
+                                    },
+                                    plugins: {
+                                        datalabels: {
+                                            align: 'end',
+                                            anchor: 'end',
+                                            offset: 4,
+                                            font: {
+                                                size: 10
+                                            },
+                                            formatter: function(value, context) {
+                                                var datasetLabel = context.dataset.label || '';
+                                                return datasetLabel + ': ' + value;
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+                        
     
                     </div>
 
@@ -233,11 +358,51 @@
                 <div class="bgc3-left">
 
                     <div class="bgc3-txt">
-                        <p>據點營收</p>
+                        <p>公共按摩椅據點營收</p>
                     </div>
 
                     <div class="bgc3-chart">
                         <!--圖表-->
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+                        <canvas id="publicchart"></canvas>
+
+<script>
+    var data = {{ data | tojson | safe }};
+    var placeLabels = {{ placeLabels | tojson | safe }};
+    var rentMoneySumData = {{ rentMoneySumData | tojson | safe }};
+    var totalMoneySumData = {{ totalMoneySumData | tojson | safe }};
+
+    var ctx = document.getElementById('publicchart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: placeLabels,
+            datasets: [{
+                label: '租金',
+                data: rentMoneySumData,
+                backgroundColor: '#CA8EFF',
+                borderColor: '#CA8EFF',
+                borderWidth: 1
+            },
+            {
+                label: '營業額',
+                data: totalMoneySumData,
+                backgroundColor: '#FFFF93',
+                borderColor: '#FFFF93',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
 
                     </div>
 
@@ -251,6 +416,45 @@
 
                     <div class="bgc3-chart">
                         <!--圖表-->
+                        <canvas id="lastChart"></canvas>
+
+                        <script>
+                            // 從Python傳遞的資料
+                            var data = JSON.parse('{{ data_json|safe }}');
+                    
+                            // 擷取x軸和y軸的數據
+                            var labels = data.map(function(item) {
+                                return item.ticketName;
+                            });
+                    
+                            var useTimes = data.map(function(item) {
+                                return item.UseTime;
+                            });
+                    
+                            // 使用Chart.js繪製折線圖
+                            var ctx = document.getElementById('lastChart').getContext('2d');
+                            var chart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        label: 'Ticket Use Time',
+                                        data: useTimes,
+                                        borderColor: 'blue',
+                                        backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                                        fill: false
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
                     </div>
                     
                 </div>

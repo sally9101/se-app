@@ -31,10 +31,10 @@
     </nav>
     <section class="section-one">
         <div class="container"> 
-            <form>  
-                <input type="search" placeholder="期間...">
+            <form action="/search" method="post">
+                <input type="text" name="search_term" placeholder="請輸入顧客編號">
                 <button type="submit">Search</button>
-             </form>
+            </form>
         </div>
         <div class="container2" tyle="border: 1px white; ">
             <div class="bgc1-top" style="border: 1px white; ">
@@ -47,7 +47,7 @@
 
             <table>
                 <thead>
-                    <tr>
+                    <tr>{{show_customer}}
                         <th width="120px">顧客編號</th>
                         <th width="120px">訂單編號</th>
                         <th width="120px">業務員編號</th>
@@ -58,15 +58,17 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for customer in customers %}
                     <tr>
-                        <td>C0001</td>
-                        <td>1</td>
-                        <td>S001</td>
-                        <td>王大黃</td>
-                        <td>0912321432</td>
-                        <td>桃園市中壢區中北路205號</td>
-                        <td>20</td>
+                        <td>{{ customer[0] }}</td>
+                        <td>{{ customer[1] }}</td>
+                        <td>{{ customer[2] }}</td>
+                        <td>{{ customer[3] }}</td>
+                        <td>{{ customer[4] }}</td>
+                        <td>{{ customer[5] }}</td>
+                        <td>{{ customer[6] }}</td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
 
