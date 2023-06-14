@@ -52,7 +52,7 @@
                         <th width="120px">分店編號</th>
                         <th width="120px">放置地點</th>
                         <th width="120px">投幣總金額</th>
-                        <th width="120px">租金</th>
+                        <th width="120px">應付租金</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,8 +61,8 @@
                         <td>{{ public[0] }}</td>
                         <td>{{ public[1] }}</td>
                         <td>{{ public[2] }}</td>
-                        <td>{{ public[4] }}</td>
-                        <td>{{ public[3] }}</td>
+                        <td>${{ public[4] }}</td>
+                        <td>${{ public[3] }}</td>
                         
                     </tr>
                     {% endfor %}

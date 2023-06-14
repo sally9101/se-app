@@ -59,9 +59,10 @@
                     <tr>
                         <th width="120px">業務員編號</th>
                         <th width="120px">分店編號</th>
+                        <th width="120px">業務員姓名</th>
                         <th width="120px">客戶人數</th>
-                        <th width="120px">目標金額</th>
                         <th width="120px">銷售總數量</th>
+                        <th width="120px">目標金額</th>
                         <th width="120px">銷售總金額</th>
                     </tr>
                 </thead>
@@ -70,10 +71,11 @@
                     <tr>
                         <td>{{ salesman[0] }}</td>
                         <td>{{ salesman[1] }}</td>
-                        <td>{{ salesman[2] }}</td>
                         <td>{{ salesman[3] }}</td>
+                        <td>{{ salesman[2] }}</td>
                         <td>{{ salesman[4] }}</td>
-                        <td>{{ salesman[5] }}</td>
+                        <td>${{ salesman[5] }}</td>
+                        <td>${{ salesman[6] }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

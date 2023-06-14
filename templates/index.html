@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>店長儀錶板</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -68,7 +68,7 @@
                     
                             var datasets = [];
                             var productIds = Object.keys(data[labels[0]]);
-                            var colors = ['#FFCC99', '#FFFF6F', '#99CCFF', '#FFCCCC', '#A3D1D1'];
+                            var colors = ['#1556A1', '#A155B9', '#F765A3', '#FDAEAE', '#899DD0'];
                     
                             for (var i = 0; i < productIds.length; i++) {
                                 var productId = productIds[i];
@@ -149,7 +149,7 @@
                         
                             // 修改图例标签
                             chartData.datasets.forEach(function(dataset) {
-                                dataset.label = '各型號銷售額'; // 将 '新标签' 替换为您想要的标签
+                                dataset.label = '商品銷售額'; // 将 '新标签' 替换为您想要的标签
                             });
                         
                             var ctx = document.getElementById('chart').getContext('2d');
@@ -157,7 +157,7 @@
                                 type: 'line',
                                 data: {
                                     labels: chartData.labels,
-                                    datasets: chartData.datasets
+                                    datasets: chartData.datasets,
                                 },
                                 options: {
                                     scales: {
@@ -217,7 +217,7 @@
                                 labels: ['業績達成率'],
                                 datasets: [{
                                     data: [achievement_rate, 100 - achievement_rate],
-                                    backgroundColor: ['#FF5151', '#FFFFFF']
+                                    backgroundColor: ['#AD7DBE', '#FFFFFF']
                                 }]
                             };
                             var options = {
@@ -288,14 +288,14 @@ Chart.pluginService.register(centerLabelPlugin);
                                         yAxisID: 'orderNumAxis',  // 使用指定的 Y 軸
                                         type: 'line',  // 折線圖
                                         fill: false,
-                                        borderColor: '#FF60AF',
-                                        backgroundColor: '#FF60AF'
+                                        borderColor: '#295BA4',
+                                        backgroundColor: '#295BA4'
                                     }, {
                                         label: '銷售額',
                                         data: sellMoneyData,
                                         yAxisID: 'sellMoneyAxis',  // 使用指定的 Y 軸
                                         type: 'bar', // 長條圖
-                                        backgroundColor: '#CECEFF'
+                                        backgroundColor: '#899DD0'
                                     }]
                                 },
                                 options: {
@@ -378,17 +378,17 @@ Chart.pluginService.register(centerLabelPlugin);
         data: {
             labels: placeLabels,
             datasets: [{
-                label: '租金',
+                label: '應付租金',
                 data: rentMoneySumData,
-                backgroundColor: '#CA8EFF',
-                borderColor: '#CA8EFF',
+                backgroundColor: '#899DD0',
+                borderColor: '#899DD0',
                 borderWidth: 1
             },
             {
                 label: '營業額',
                 data: totalMoneySumData,
-                backgroundColor: '#FFFF93',
-                borderColor: '#FFFF93',
+                backgroundColor: '#AD7DBE',
+                borderColor: '#AD7DBE',
                 borderWidth: 1
             }]
         },
@@ -440,7 +440,7 @@ Chart.pluginService.register(centerLabelPlugin);
                                     datasets: [{
                                         label: '使用次數',
                                         data: useTimes,
-                                        borderColor: 'blue',
+                                        borderColor: '#899DD0',
                                         backgroundColor: 'rgba(0, 0, 255, 0.2)',
                                         fill: false
                                     }]

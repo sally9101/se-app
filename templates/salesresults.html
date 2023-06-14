@@ -47,23 +47,24 @@
       {% if results2 %}
       <thead>
         <tr>
-            <th width="120px">業務員編號</th>
-            <th width="120px">分店編號</th>
-            <th width="120px">客戶人數</th>
-            <th width="120px">目標金額</th>
-            <th width="120px">銷售總數量</th>
-            <th width="120px">銷售總金額</th>
-        </tr>
+          <th width="120px">業務員編號</th>
+          <th width="120px">分店編號</th>
+          <th width="120px">業務員姓名</th>
+          <th width="120px">客戶人數</th>
+          <th width="120px">銷售總數量</th>
+          <th width="120px">目標金額</th>
+          <th width="120px">銷售總金額</th>
       </thead>
       <tbody>
         {% for row in results2 %}
         <tr>
             <td>{{ row[0] }}</td>
             <td>{{ row[1] }}</td>
-            <td>{{ row[2] }}</td>
             <td>{{ row[3] }}</td>
+            <td>{{ row[2] }}</td>
             <td>{{ row[4] }}</td>
-            <td>{{ row[5] }}</td>
+            <td>${{ row[5] }}</td>
+            <td>${{ row[6] }}</td>
         </tr>
         {% endfor %}
       </tbody>
