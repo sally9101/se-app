@@ -208,26 +208,51 @@ def index():
     # 连接到MySQL数据库
     cnx = get_db_connection()
     cursor = cnx.cursor()
+    query = '''
+        SELECT orderNum, semester, productId
+        FROM `order`
+        ORDER BY semester, productId
+    '''
+    cursor.execute(query)
+    data = cursor.fetchall()
 
-    # 执行查询语句
-    cursor.execute("SELECT semester, productId, SUM(orderNum) FROM `order` GROUP BY semester, productId")
-
-    # 获取查询结果
-    result = cursor.fetchall()
-
-    # 构造数据字典
+    # 處理資料
     chart_data = {}
-    for row in result:
-        semester = row[0]
-        product_id = row[1]
-        order_num = row[2]
+    semesters = set()
+    products = set()
+    for row in data:
+        order_num = row[0]
+        semester = row[1]
+        product_id = row[2]
 
         if semester not in chart_data:
             chart_data[semester] = {}
 
         chart_data[semester][product_id] = order_num
+        semesters.add(semester)
+        products.add(product_id)
 
-    # 关闭数据库连接
+    # 建立堆疊長條圖的資料格式
+    chart_datasets = []
+    for product_id in sorted(products):
+        data = []
+        for semester in sorted(semesters):
+            if semester in chart_data and product_id in chart_data[semester]:
+                data.append(chart_data[semester][product_id])
+            else:
+                data.append(0)
+
+        chart_datasets.append({
+            'label': f'Product {product_id}',
+            'data': data
+        })
+
+    chart_data_json_str = json.dumps({
+        'labels': sorted(semesters),
+        'datasets': chart_datasets
+    })
+
+    # 關閉資料庫連接
     cursor.close()
     cnx.close()
 ###########################################################
@@ -258,7 +283,7 @@ def index():
     return render_template('index.html', total_price=total_price, percentage_change=percentage_change, 
                            json_data=json_data, data=data, chart_json=chart_json, chart_data=chart_data_json, 
                            total_sell_target=total_sell_target,achievement_rate=achievement_rate,
-                           data1=data1, placeLabels=placeLabels,data_json=data_json,
+                           data1=data1, placeLabels=placeLabels,data_json=data_json,chart_data_json_str=chart_data_json_str,
                            rentMoneySumData=rentMoneySumData, totalMoneySumData=totalMoneySumData, chart_data1=chart_data)
 
     

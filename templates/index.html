@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>店長儀錶板</title>
+    <title>營運儀錶板</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -35,7 +35,7 @@
                 <div class="bgc1-top" style=" background-color: #fff;">
 
                     <div class="bgc-top">
-                        <p>2023年銷售額</p>
+                        <p>Q4銷售額</p>
                         <img src="{{ url_for('static', filename='img/more.png') }}" alt="">
                     </div>
                         
@@ -60,84 +60,47 @@
 
                     <div class="bgc1-left">
                         <!--圖表-->
-                        <canvas id="myChart"></canvas>
-
+                        <canvas id="stacked-bar-chart"></canvas>
                         <script>
-                            var data = {{ chart_data1|tojson }};
-                            var labels = Object.keys(data);
-                    
-                            var datasets = [];
-                            var productIds = Object.keys(data[labels[0]]);
-                            var colors = ['#1556A1', '#A155B9', '#F765A3', '#FDAEAE', '#899DD0'];
-                    
-                            for (var i = 0; i < productIds.length; i++) {
-                                var productId = productIds[i];
-                                var orderNums = [];
-                                var color = colors[i % colors.length];
-                    
-                                for (var j = 0; j < labels.length; j++) {
-                                    var semester = labels[j];
-                                    orderNums.push(data[semester][productId]);
-                                }
-                    
-                                datasets.push({
-                                    label:  productId,
-                                    data: orderNums,
-                                    backgroundColor: color,
-                                    borderWidth: 0
-                                });
-                            }
-                    
-                            var ctx = document.getElementById('myChart').getContext('2d');
-                            var chart = new Chart(ctx, {
+                            var chartData = JSON.parse('{{ chart_data_json_str|safe }}');
+                            
+                            var ctx = document.getElementById('stacked-bar-chart').getContext('2d');
+                            new Chart(ctx, {
                                 type: 'bar',
-                                data: {
-                                    labels: labels,
-                                    datasets: datasets
-                                },
+                                data: chartData,
                                 options: {
                                     scales: {
                                         x: {
-                                            stacked: true,
-                                            ticks: {
-                                                beginAtZero: true
-                                            }
+                                            stacked: true
                                         },
                                         y: {
-                                            stacked: true,
-                                            ticks: {
-                                                beginAtZero: true
-                                            }
+                                            stacked: true
                                         }
                                     },
                                     plugins: {
                                         legend: {
-                                            position: 'top',
-                                            labels: {
-                                                generateLabels: function(chart) {
-                                                    var datasets = chart.data.datasets;
-                                                    var labels = [];
-                    
-                                                    for (var i = 0; i < datasets.length; i++) {
-                                                        var dataset = datasets[i];
-                                                        labels.push({
-                                                            text: dataset.label,
-                                                            fillStyle: dataset.backgroundColor,
-                                                            hidden: dataset.hidden,
-                                                            index: i
-                                                        });
-                                                    }
-                    
-                                                    return labels;
-                                                }
-                                            }
+                                            display: true,
+                                            position: 'top'
                                         }
                                     },
                                     responsive: true,
                                     maintainAspectRatio: false
                                 }
                             });
+                        
+                            // 設定長條的不同顏色
+                            chartData.datasets.forEach(function(dataset, index) {
+                                var colors = ['#1556A1', '#A155B9', '#F765A3', '#FDAEAE', '#899DD0', 'rgba(255, 159, 64, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(75, 192, 192, 0.5)'];
+                                dataset.backgroundColor = colors[index % colors.length];
+                                dataset.borderColor = colors[index % colors.length];
+                            });
+
+                            // 移除圖例的 "Product" 字樣
+    chartData.datasets.forEach(function(dataset) {
+        dataset.label = dataset.label.replace('Product ', '');
+    });
                         </script>
+                        
                     </div>
 
                     <div class="bgc1-right">
@@ -182,7 +145,7 @@
                 <div class="bgc1-top" style=" background-color: #fff;">
 
                     <div class="bgc-top">
-                        <p>2023年目標銷售額</p>
+                        <p>Q4目標銷售額</p>
                         <img src="{{ url_for('static', filename='img/more.png') }}" alt="">
                     </div>
 
@@ -358,7 +321,7 @@ Chart.pluginService.register(centerLabelPlugin);
                 <div class="bgc3-left">
 
                     <div class="bgc3-txt">
-                        <p>2023年公共按摩椅據點營收</p>
+                        <p>Q4公共按摩椅據點營收</p>
                     </div>
 
                     <div class="bgc3-chart">
